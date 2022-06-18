@@ -18,7 +18,7 @@ public:
 
 	void ClearAll() override final;
 
-	void ShowAllElements() override final;
+	void ShowAllElements() const override final;
 
 	Type * ReturnUsedElement();
 

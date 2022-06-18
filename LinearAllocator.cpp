@@ -1,3 +1,4 @@
+#pragma once
 #include "LinearAllocator.h"
 #include <iostream>
 
@@ -22,7 +23,7 @@ void LinearAllocator<Type>::PushOne(Type type) {
 
 
 template<typename Type>
-void LinearAllocator<Type>::ShowAllElements() {
+void LinearAllocator<Type>::ShowAllElements() const{
 	int countBuffer = this->Count;
 	while (countBuffer--) {
 		std::cout << Area[countBuffer] << " \n";

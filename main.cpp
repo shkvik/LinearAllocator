@@ -8,8 +8,16 @@ int main() {
 
 
 	
+	PoolAllocator<int> e(4, 5);
 
-	
+	e.ShowAllElements();
+	e.TargetPushOne(0, 0, 51);
+	e.TargetPushOne(1, 1, 52);
+	e.TargetPushOne(2, 2, 53);
+	e.TargetPushOne(3, 3, 54);
+	e.ShowAllElements();
+
+	e.PrintBlocksAdress();
 
 	void* pointer = new void* [5];
 
