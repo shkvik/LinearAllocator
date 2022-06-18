@@ -19,14 +19,18 @@ public:
 
 	/* PoolAllocator methods */
 	void TargetPushOne(size_t blockNumber, size_t cellNumber, Type data);
-	void PrintBlocksAdress();
+	void PrintVarBlocksAdress();
 
 
 private:
 
 	struct Block {
 		Block() {}
-		~Block() {}
+		~Block() { delete[] this->Data; }
+		struct Cell {
+			bool Free = true;
+			Type* Data;
+		};
 		Type* Data;
 		Block* blockPrevious;
 		Block* blockNext;
@@ -43,10 +47,10 @@ private:
 
 
 	void AllocateBlocks(Block* blocks, size_t& blockSize);
+	void SearchFreeBlock(size_t& blocksize);
 
-	bool ValidateBlockSize(size_t& blockSize);
-	bool ValidateBlockCount(size_t& blockCount);
-
+	bool ValidateBlockSize(size_t& blockSize) noexcept;
+	bool ValidateBlockCount(size_t& blockCount) noexcept;
 
 
 };

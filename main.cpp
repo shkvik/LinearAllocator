@@ -6,7 +6,6 @@ using namespace std;
 int main() {
 
 
-
 	
 	PoolAllocator<int> e(4, 5);
 
@@ -15,9 +14,10 @@ int main() {
 	e.TargetPushOne(1, 1, 52);
 	e.TargetPushOne(2, 2, 53);
 	e.TargetPushOne(3, 3, 54);
+	e.TargetPushOne(5, 6, 54);
 	e.ShowAllElements();
 
-	e.PrintBlocksAdress();
+	e.PrintVarBlocksAdress();
 
 	void* pointer = new void* [5];
 
