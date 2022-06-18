@@ -3,11 +3,18 @@
 using namespace std;
 
 
-
-
 int main() {
 
+
+
+	
+
+	
+
+	void* pointer = new void* [5];
+
 	LinearAllocator<int> allocatorInt(8);
+
 
 	cout << "Not Add \n";
 	allocatorInt.ShowAllElements();

@@ -2,11 +2,10 @@
 #include <iostream>
 
 template<typename Type>
-LinearAllocator<Type>::LinearAllocator(int count) noexcept {
-	this->Count = count;
-	this->Area = new Type[count]{ 0 };
-	this->Used = this->Area;
-};
+
+LinearAllocator<Type>::LinearAllocator(int count) noexcept : Count(count), Area(new Type[count]{ 0 }), Used(Area) {
+	static_assert(!std::is_same<Type, void*>::value, "Type can't be a void*");
+}
 
 
 template<typename Type>
@@ -17,7 +16,7 @@ void LinearAllocator<Type>::PushOne(Type type) {
 		if (AllocateCount != this->Count) this->Used = this->Used + 1;
 	}
 	else {
-		throw std::exception("I haven't place more");
+		throw std::runtime_error("I haven't place more");
 	}
 }
 
@@ -33,15 +32,13 @@ void LinearAllocator<Type>::ShowAllElements() {
 
 template<typename Type>
 void LinearAllocator<Type>::PushArray(Type* type) {
+
 	auto elementsCount = CountType(type);
 
 	if (elementsCount <= (this->Count - this->AllocateCount)) {
 		for (int i = 0; i < elementsCount; i++) {
-			this->Area[AllocateCount] = *(type);
-			type++;
-			AllocateCount++;
+			this->Area[AllocateCount] = *(type); type++; AllocateCount++;
 			if (AllocateCount != this->Count) this->Used += 1;
-
 		}
 	}
 }
@@ -79,8 +76,9 @@ LinearAllocator<Type>::~LinearAllocator() {
 template<typename Type>
 size_t LinearAllocator<Type>::CountType(const Type* type) {
 	size_t result = 0;
-	while (*(type++)) {
+	while (*(type)++) {
 		result++;
 	}
 	return result - 1;
 }
+
