@@ -1,6 +1,8 @@
 #pragma once
 #include "LinearAllocator.h"
 #include <iostream>
+#include <vector>
+#include <string> 
 
 template<typename Type>
 
@@ -11,33 +13,27 @@ LinearAllocator<Type>::LinearAllocator(int count) noexcept : Count(count), Area(
 
 template<typename Type>
 void LinearAllocator<Type>::PushOne(Type type) {
-	if (AllocateCount < this->Count) {
-		this->Area[AllocateCount] = type;
-		this->AllocateCount++;
-		if (AllocateCount != this->Count) this->Used = this->Used + 1;
-	}
-	else {
-		throw std::runtime_error("I haven't place more");
-	}
+	if (AllocateCount < this->Count) { Area[AllocateCount] = type; AllocateCount++;
+		if (AllocateCount != this->Count) this->Used = this->Used + 1;	}
+	else { throw std::runtime_error("I haven't place more");}
 }
 
 
 template<typename Type>
-void LinearAllocator<Type>::ShowAllElements() const{
+void LinearAllocator<Type>::GetAllElements() const{
+
+	bool validate = ValidatePrintableType(*(Area));
+
 	int countBuffer = this->Count;
-	while (countBuffer--) {
-		std::cout << Area[countBuffer] << " \n";
-	}
+
 }
 
 
 template<typename Type>
-void LinearAllocator<Type>::PushArray(Type* type) {
+void LinearAllocator<Type>::PushArray(Type* type, size_t count) {
 
-	auto elementsCount = CountType(type);
-
-	if (elementsCount <= (this->Count - this->AllocateCount)) {
-		for (int i = 0; i < elementsCount; i++) {
+	if (count <= (this->Count - this->AllocateCount)) {
+		for (int i = 0; i < count; i++) {
 			this->Area[AllocateCount] = *(type); type++; AllocateCount++;
 			if (AllocateCount != this->Count) this->Used += 1;
 		}
@@ -53,8 +49,8 @@ Type * LinearAllocator<Type>::ReturnUsedElement() {
 
 template<typename Type>
 void LinearAllocator<Type>::ClearLastOne() {
-	this->Area[AllocateCount - 1] = 0;
-	this->Used = this->Used - 1;
+	Area[AllocateCount - 1] = NULL;
+	Used = Used - 1;
 	AllocateCount--;
 }
 
@@ -75,11 +71,19 @@ LinearAllocator<Type>::~LinearAllocator() {
 
 
 template<typename Type>
-size_t LinearAllocator<Type>::CountType(const Type* type) {
-	size_t result = 0;
-	while (*(type)++) {
-		result++;
-	}
-	return result - 1;
-}
+bool LinearAllocator<Type>::ValidatePrintableType(Type type) const {
+	
+	int controllVal = 0;
 
+	std::vector<bool> flags{
+		typeid(type) == typeid(int),
+		typeid(type) == typeid(char),
+		typeid(type) == typeid(const char),
+		typeid(type) == typeid(std::string),
+	};
+
+	for (auto item : flags) { controllVal += (int)item; }
+
+	return controllVal > 0 ? true : false;
+
+}

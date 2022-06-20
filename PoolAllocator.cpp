@@ -1,5 +1,4 @@
 #include "PoolAllocator.h"
-#include <exception>
 
 
 
@@ -17,19 +16,22 @@ void PoolAllocator<Type>::PushOne(Type type){
 }
  
 template<typename Type>
-void PoolAllocator<Type>::PushArray(Type* type) {}
+void PoolAllocator<Type>::PushArray(Type* type, size_t count) {}
 
 
 
 template<typename Type>
-void PoolAllocator<Type>::ShowAllElements() const{
+void PoolAllocator<Type>::GetAllElements() const{
 	Block* blocksCopy = PoolAllocator<Type>::Blocks;
 	std::cout << "Blocks count: " << BlockCount << " Block size: " << BlockSize << " \n";
+
 	for (int i = 0; i < BlockCount; i++) {
 		std::cout << "Block #" << i << " Adress:" << blocksCopy << " \n";
+
 		for (int i = 0; i < BlockSize; i++) {
 			std::cout << "\tCell #" << i << ":  value: " << blocksCopy->Data[i] << " \n";
-		} blocksCopy++;
+		} 
+		blocksCopy++;
 	}
 }
 
@@ -43,7 +45,7 @@ void PoolAllocator<Type>::ClearAll() {}
 
 template<typename Type>
 PoolAllocator<Type>::~PoolAllocator() {
-	delete [] this->Blocks
+	delete[] this->Blocks;
 }
 
 

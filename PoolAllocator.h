@@ -12,8 +12,8 @@ public:
 
 	/* IAllocator Interface Access */
 	void PushOne(Type type) override final;
-	void PushArray(Type* type) override final;
-	void ShowAllElements() const override final;
+	void PushArray(Type* type, size_t count) override final;
+	void GetAllElements() const override final;
 	void ClearLastOne() override final;
 	void ClearAll() override final;
 
@@ -31,10 +31,10 @@ private:
 			bool Free = true;
 			Type* Data;
 		};
-		Type* Data;
-		Block* blockPrevious;
-		Block* blockNext;
-		Block* blockThis;
+		Type* Data = nullptr;
+		Block* blockPrevious = nullptr;
+		Block* blockNext = nullptr;
+		Block* blockThis = nullptr;
 	};
 
 

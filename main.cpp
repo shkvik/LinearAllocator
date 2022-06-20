@@ -2,20 +2,31 @@
 
 using namespace std;
 
+class ForTest {
+public:
+	ForTest() = default;
+	ForTest(uint64_t number) : Number(number) {
+		std::cout << "Call Constructor: " << Number << " \n";
+	}
+	~ForTest() {
+		std::cout << "Call Destructor: " << Number << " \n";
+	}
+	uint64_t Number = 0;
+};
 
 int main() {
 
+	LinearAllocator<ForTest> tested(5);
 
-	
 	PoolAllocator<int> e(4, 5);
-
-	e.ShowAllElements();
+	
+	e.GetAllElements();
 	e.TargetPushOne(0, 0, 51);
 	e.TargetPushOne(1, 1, 52);
 	e.TargetPushOne(2, 2, 53);
 	e.TargetPushOne(3, 3, 54);
 	e.TargetPushOne(5, 6, 54);
-	e.ShowAllElements();
+	e.GetAllElements();
 
 	e.PrintVarBlocksAdress();
 
@@ -25,7 +36,7 @@ int main() {
 
 
 	cout << "Not Add \n";
-	allocatorInt.ShowAllElements();
+	allocatorInt.GetAllElements();
 	
 
 
@@ -37,26 +48,26 @@ int main() {
 
 	int * a = new int[3] {1, 2, 5};
 
-	allocatorInt.PushArray(a);
+	allocatorInt.PushArray(a, 3);
 
 	cout << "After Add \n";
-	allocatorInt.ShowAllElements();
+	allocatorInt.GetAllElements();
 	
 
 	cout << "After Clear Last \n";
 	allocatorInt.ClearLastOne();
-	allocatorInt.ShowAllElements();
+	allocatorInt.GetAllElements();
 
 
 
 	auto j = allocatorInt.ReturnUsedElement();
 	cout << "Last Elem: " << *(j) << " \n";
-	allocatorInt.ShowAllElements();
+	allocatorInt.GetAllElements();
 
 	allocatorInt.ClearAll();
 
 	cout << "After Clear All \n";
-	allocatorInt.ShowAllElements();
+	allocatorInt.GetAllElements();
 
 	LinearAllocator<char> allocatorChar(5);
 	allocatorChar.PushOne('a');
@@ -66,6 +77,6 @@ int main() {
 	allocatorChar.PushOne('e');
 	auto k = allocatorChar.ReturnUsedElement();
 	cout << *(k) << " \n";
-	allocatorChar.ShowAllElements();
+	allocatorChar.GetAllElements();
 
 }
