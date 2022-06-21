@@ -13,7 +13,7 @@ public:
 	/* IAllocator Interface Access */
 	void PushOne(Type type) override final;
 	void PushArray(Type* type, size_t count) override final;
-	void GetAllElements() const override final;
+	void GetAllElements() const;
 	void ClearLastOne() override final;
 	void ClearAll() override final;
 

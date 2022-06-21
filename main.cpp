@@ -4,22 +4,48 @@ using namespace std;
 
 class ForTest {
 public:
-	ForTest() = default;
-	ForTest(uint64_t number) : Number(number) {
-		std::cout << "Call Constructor: " << Number << " \n";
+
+	
+	ForTest()  {
+		Number++;
+		hisNumber = Number;
+		std::cout << "Call Constructor" << hisNumber << " \n";
+		this->Array = new int[10]{0};
+
+		for (int i = 0; i < 9; i++) {
+			Array[i] = i;
+		}
+	}
+
+	ForTest(int check) : hisNumber(check) {
+		std::cout << "Call Constructor" << hisNumber << " \n";
 	}
 	~ForTest() {
-		std::cout << "Call Destructor: " << Number << " \n";
+		delete[] Array;
+		std::cout << "Call Destructor: " << hisNumber << " \n";
 	}
-	uint64_t Number = 0;
+
+	void ShowMyElem() {
+		for (int i = 0; i < 9; i++) {
+			cout << Array[i] << " \n";
+		}
+	}
+
+	int* Array = nullptr;
+	int Changeable;
+	int hisNumber = 0;
+
+	static uint64_t Number;
 };
+
+uint64_t ForTest::Number = 0;
 
 int main() {
 
-	LinearAllocator<ForTest> tested(5);
-
 	PoolAllocator<int> e(4, 5);
 	
+	
+
 	e.GetAllElements();
 	e.TargetPushOne(0, 0, 51);
 	e.TargetPushOne(1, 1, 52);
@@ -30,13 +56,31 @@ int main() {
 
 	e.PrintVarBlocksAdress();
 
-	void* pointer = new void* [5];
+	LinearAllocator<ForTest> tested(5);
+
+	tested.PushOne(ForTest(6));
+
+	tested.PushOne(ForTest(7));
+
+	tested.PushOne(ForTest(8));
+
+	tested.PushOne(ForTest(9));
+
+
+	for (int i = 0; i < 5; i++) {
+		cout << (tested.ReturnStartElement() + i)->Changeable << " \n";
+	}
+	
+
+	tested.ShowAllElements();
+	tested.ClearLastOne();
+
 
 	LinearAllocator<int> allocatorInt(8);
 
 
 	cout << "Not Add \n";
-	allocatorInt.GetAllElements();
+	allocatorInt.ShowAllElements();
 	
 
 
@@ -51,23 +95,23 @@ int main() {
 	allocatorInt.PushArray(a, 3);
 
 	cout << "After Add \n";
-	allocatorInt.GetAllElements();
+	allocatorInt.ShowAllElements();
 	
 
 	cout << "After Clear Last \n";
 	allocatorInt.ClearLastOne();
-	allocatorInt.GetAllElements();
+	allocatorInt.ShowAllElements();
 
 
 
 	auto j = allocatorInt.ReturnUsedElement();
 	cout << "Last Elem: " << *(j) << " \n";
-	allocatorInt.GetAllElements();
+	allocatorInt.ShowAllElements();
 
 	allocatorInt.ClearAll();
 
 	cout << "After Clear All \n";
-	allocatorInt.GetAllElements();
+	allocatorInt.ShowAllElements();
 
 	LinearAllocator<char> allocatorChar(5);
 	allocatorChar.PushOne('a');
@@ -77,6 +121,6 @@ int main() {
 	allocatorChar.PushOne('e');
 	auto k = allocatorChar.ReturnUsedElement();
 	cout << *(k) << " \n";
-	allocatorChar.GetAllElements();
+	allocatorChar.ShowAllElements();
 
 }
